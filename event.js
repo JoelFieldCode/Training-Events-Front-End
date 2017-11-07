@@ -5,14 +5,22 @@ var $$event = Vue.extend({
     }
   },
 
+  mixins: [relativeMixin],
+
   template: `
 
         <div class = "row" style = "margin-top: 50px; margin-bottom: 50px;">
           <div class="page-header">
             <h1>{{event.title}}
               <small>{{event.location}} at {{event.datetime | timestamp}}</small>
+
             </h1>
             <seats :seats_available="event.seats_available"> </seats>
+            <template v-if="eventIsLessThanAMonthAway(event)">
+              <span class = "glyphicon glyphicon-exclamation-sign" style = "color: red;">
+                {{relativeDiff(event).toString().replace("-", "")}} days left!
+              </span>
+            </template>
           </div>
         </div>
 

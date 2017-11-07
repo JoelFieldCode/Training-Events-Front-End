@@ -1,12 +1,11 @@
 .card{
   margin: 10px;
   cursor: pointer;
+  padding-bottom: 10px;
 }
 
 .card:hover{
-  font-weight: bold;
-  background-color: #3498db;
-  color: #FFF;
+   box-shadow: 10px 10px 5px #888888;
 }
 
 .loading {

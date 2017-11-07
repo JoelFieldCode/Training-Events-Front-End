@@ -16,7 +16,6 @@ var $$seatComponent = Vue.extend({
         'btn-primary': (this.seats_available > 5),
         'btn-warning': (this.seats_available < 5 && this.seats_available > 1),
         'btn-danger': (this.seats_available < 2),
-
       }
     }
 

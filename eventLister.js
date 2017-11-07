@@ -7,6 +7,8 @@ var $$eventLister = Vue.extend({
     }
   },
 
+  mixins: [relativeMixin],
+
   template: `
     <!-- Page Content -->
     <div>
@@ -29,11 +31,20 @@ var $$eventLister = Vue.extend({
 
       <div class = "row" v-show="!loading" style = "margin-bottom: 30px;">
           <div v-on:click="loadEvent(event)" v-for="event in events | dontShowOldEvents | events_in_users_location | latest | showEventsWithSeatsAvailable | last_five" class="card" style="width: 20rem;">
-              <img class="card-img-top" src={{event.img_url}} alt="Card image cap">
+              <img style = "height: 200px;"class="card-img-top" src={{event.img_url}} alt="Card image cap">
               <div class="card-block">
                 <h4 class="card-title">{{event.title}}</h4>
                 <p class="card-text">{{event.location}}</p>
-                <p class="card-text">{{event.datetime | timestamp}}</p>
+                <p class="card-text">
+                  {{event.datetime | timestamp}}
+                  <template v-if="eventIsLessThanAMonthAway(event)">
+                    <span class = "glyphicon glyphicon-exclamation-sign" style = "color: red;">
+                      {{relativeDiff(event).toString().replace("-", "")}} days left!
+                    </span>
+                  </template>
+                </p>
+
+
                 <p class="card-text">
                   <seats :seats_available="event.seats_available"> </seats>
 
@@ -89,7 +100,7 @@ var $$eventLister = Vue.extend({
     },
 
     getUserLocation: function(){
-      
+
       if($$userLocation !== null){
         this.userLocation = $$userLocation;
         this.loading = false;
