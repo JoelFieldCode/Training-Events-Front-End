@@ -257,10 +257,19 @@ function testEventFiltering(){
 function testLocationGrabbing(){
   var vm = new $$eventLister();
 
+  //carina position
   var position = {
     coords: {
       latitude: -27.483071199999998,
       longitude: 153.1393692
+    }
+  };
+
+  //underwood position
+  var position = {
+    coords: {
+      latitude: -27.6062687,
+      longitude: 153.1088614
     }
   };
 
