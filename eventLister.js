@@ -29,7 +29,7 @@ var $$eventLister = Vue.extend({
 
       <i v-if="noEventsFound && !loading">
         No events found in your area.
-        <button class = "btn btn-success" v-on:click="userLocation = ''"> Show all events? </button>
+        <button style = "cursor: pointer;"class = "btn btn-success" v-on:click="userLocation = ''"> Show all events? </button>
       </i>
 
       <i v-if="userLocation === '' && !loading">
