@@ -5,3 +5,5 @@ Once you are ready with node & npm installed, you will need the npm module "http
 npm install http-server -g
 
 http-server -p 8080
+
+Visit http://localhost:8080/
