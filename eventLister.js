@@ -148,6 +148,12 @@ var $$eventLister = Vue.extend({
     // grab the users current location via the google maps api
     getUserLocation: function(){
 
+      //detect if browser supports geo location
+      if(!'geolocation' in window){
+        this.loading = false;
+        return;
+      }
+
       // access cached user location for when user navigates back from
       // detail page to the main event listing
       if($$userLocation !== null){
