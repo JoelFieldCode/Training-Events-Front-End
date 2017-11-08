@@ -1,11 +1,10 @@
 // router init
-
 var router = new VueRouter();
 
 //cached user location
 var $$userLocation = null;
 
-// init seats conditional styling component
+// init seats conditional styling component and relative time component
 Vue.component('seats', $$seatComponent);
 Vue.component('relative-time', $$relativeTime);
 
@@ -16,6 +15,7 @@ var app = Vue.extend({
 
 //init route views
 router.map({
+
   '/': {
     component: $$eventLister
   },

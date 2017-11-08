@@ -27,6 +27,12 @@ var $$eventLister = Vue.extend({
         </div>
       </div>
 
+      <i v-if="userLocation === '' && !loading">
+          Seeing events that aren't in your area? Click the "compass" icon far right
+          in your browser URL box to allow us to see your location so we can tailor
+          which events you will see listed here.
+      </i>
+
       <div class = "row" v-show="!loading" style = "margin-bottom: 30px;">
           <!--
             Bootstrap card for each event, the | filters will do the following:
@@ -198,6 +204,14 @@ function testEventFiltering(){
       console.error(`Should be showing event with ID 8 as it is the second most recent event compared to today's date of ${moment().format('DD/MM/YYYY')}`);
     }
 
+    if(brisbaneEvents[0].id !== 6){
+      console.error(`Based on today's date of ${moment().format('DD/MM/YYYY')} the Event with ID 6 should be the first in the list`);
+    }
+
+    if(brisbaneEvents[4].id !== 2){
+      console.error(`Based on today's date of ${moment().format('DD/MM/YYYY')} the Event with ID 2 should be the fifth item in the list`);
+    }
+
     vm.userLocation = "Sydney QLD, Australia";
     var sydneyEvents = vm.$eval("events | dontShowOldEvents | events_in_users_location | seatsAvailable | latest | first_five");
 
@@ -210,6 +224,29 @@ function testEventFiltering(){
   vm.getEvents();
 }
 
+/*
+** test that given static postion co-ordinates the app produces Brisbane QLD, Australia
+** as we filter on this exact match later.
+*/
+function testLocationGrabbing(){
+  var vm = new $$eventLister();
+
+  var position = {
+    coords: {
+      latitude: -27.483071199999998,
+      longitude: 153.1393692
+    }
+  };
+
+  vm.$watch("userLocation", function(){
+    if(vm.userLocation !== "Brisbane QLD, Australia"){
+      console.error(`User location should be Brisbane QLD, Australia with coordinates of lat: ${position.coords.latitude}, long: ${position.coords.longitude}`);
+    }
+  });
+
+  vm.findCity(position);
+
+}
 
 function findEventById(events,id){
     return events.filter(function(event){
@@ -218,3 +255,4 @@ function findEventById(events,id){
 }
 
 testEventFiltering();
+testLocationGrabbing();

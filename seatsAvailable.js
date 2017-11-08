@@ -32,3 +32,20 @@ var $$seatComponent = Vue.extend({
   },
 
 });
+
+//tests
+
+// test button styling
+function testButtonStyling(){
+  var mount = document.createElement('div');
+
+  var vm = new $$seatComponent({el: mount, propsData: {'seats_available': 6}});
+  vm.seats_available = 7;
+
+  if(vm.getClass["btn-warning"] !== true){
+    console.error("With 7 seats available the button class should be the bootstrap warning class")
+  }
+
+}
+
+testButtonStyling();

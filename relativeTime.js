@@ -36,3 +36,20 @@ var $$relativeTime = Vue.extend({
       </template>
   `
 });
+
+//tests
+
+// test relative time computation
+function testRelativeTimeComputation(){
+  var mount = document.createElement('div');
+
+  var vm = new $$relativeTime({el: mount, propsData: {'event_time': '2017-12-02T09:03:55+00:00'}});
+  vm.event_time = '2017-12-02T09:03:55+00:00';
+
+  if(vm.eventIsLessThanAMonthAway !== true){
+    console.error("The event is less than a month away so this computed property should return true")
+  }
+
+}
+
+testRelativeTimeComputation();

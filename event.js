@@ -66,6 +66,7 @@ function testEventFind(){
   vm.$route.params = {};
   vm.$route.params.eventId = 3;
 
+  // I've hard-coded a special key into the Event with id 3 which I'm expecting to find
   vm.$watch("event", function(){
     if(vm.event.unique_key_to_find !== "find_me"){
       console.error("Not displaying the correct event based on the route param")
