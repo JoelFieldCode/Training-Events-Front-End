@@ -39,7 +39,7 @@ var $$eventLister = Vue.extend({
             Clicking a card will route to the detail page for the event
           -->
           <div v-on:click="loadEvent(event)" v-for="event in events | dontShowOldEvents | events_in_users_location | seatsAvailable | latest | first_five" class="card" style="width: 20rem;">
-              <img style = "height: 200px;"class="card-img-top" src={{event.img_url}} alt="Card image cap">
+              <img style = "height: 200px;"class="card-img-top" v-bind:src="event.img_url" alt="Card image cap">
               <div class="card-block">
                 <h4 class="card-title">{{event.title}}</h4>
                 <p class="card-text">{{event.location}}</p>
@@ -166,4 +166,55 @@ var $$eventLister = Vue.extend({
     }
 
   }
-})
+});
+
+//tests
+
+// test filtering of events
+function testEventFiltering(){
+  var vm = new $$eventLister();
+
+  vm.$watch("events", function(){
+    vm.userLocation = "Brisbane QLD, Australia";
+    var brisbaneEvents = vm.$eval("events | dontShowOldEvents | events_in_users_location | seatsAvailable | latest | first_five");
+
+    if(findEventById(brisbaneEvents,10).length > 0){
+      console.error("Shoudn't show event with ID 10 as it is from 2016");
+    }
+
+    if(findEventById(brisbaneEvents,1).length > 0){
+      console.error("Shoudn't show event with ID 1 as it is in Sydney and the Users location is Brisbane QLD, Australia");
+    }
+
+    if(findEventById(brisbaneEvents,9).length > 0){
+      console.error("Shoudn't show event with ID 9 as it has no seats available");
+    }
+
+    if(findEventById(brisbaneEvents,12).length > 0){
+      console.error(`Shoudn't show event with ID 12 as there are 5 events that are sooner compared to today's date of ${moment().format('DD/MM/YYYY')}`);
+    }
+
+    if(findEventById(brisbaneEvents,8).length < 1){
+      console.error(`Should be showing event with ID 8 as it is the second most recent event compared to today's date of ${moment().format('DD/MM/YYYY')}`);
+    }
+
+    vm.userLocation = "Sydney QLD, Australia";
+    var sydneyEvents = vm.$eval("events | dontShowOldEvents | events_in_users_location | seatsAvailable | latest | first_five");
+
+    if(findEventById(sydneyEvents,1).length < 1){
+      console.error("Should be showing event with ID 1 as the User location is set to Sydney");
+    }
+
+  });
+
+  vm.getEvents();
+}
+
+
+function findEventById(events,id){
+    return events.filter(function(event){
+      return event.id === id;
+    });
+}
+
+testEventFiltering();

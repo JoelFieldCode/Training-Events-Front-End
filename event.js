@@ -28,7 +28,7 @@ var $$event = Vue.extend({
 
         <div class = "row">
             <div class = "col-md-6">
-                <img src={{event.img_url}} class="img-fluid" alt="Responsive image">
+                <img v-bind:src="event.img_url" class="img-fluid" alt="Responsive image">
             </div>
             <div class = "col-md-6">
                 {{event.desc}}
@@ -55,3 +55,25 @@ var $$event = Vue.extend({
 
   }
 })
+
+//tests
+
+// test that event detail component finds the correct event to display
+function testEventFind(){
+  var vm = new $$event();
+
+  vm.$route = {};
+  vm.$route.params = {};
+  vm.$route.params.eventId = 3;
+
+  vm.$watch("event", function(){
+    if(vm.event.unique_key_to_find !== "find_me"){
+      console.error("Not displaying the correct event based on the route param")
+    }
+  })
+
+  vm.getEvent();
+
+}
+
+testEventFind();
