@@ -232,7 +232,7 @@ function testEventFiltering(){
       console.error(`Based on today's date of ${moment().format('DD/MM/YYYY')} the Event with ID 2 should be the fifth item in the list`);
     }
 
-    vm.userLocation = "Sydney QLD, Australia";
+    vm.userLocation = "Sydney NSW, Australia";
     var sydneyEvents = vm.$eval("events | dontShowOldEvents | events_in_users_location | seatsAvailable | latest | first_five");
 
     if(findEventById(sydneyEvents,1).length < 1){
