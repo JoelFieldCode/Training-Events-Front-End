@@ -27,6 +27,11 @@ var $$eventLister = Vue.extend({
         </div>
       </div>
 
+      <i v-if="noEventsFound && !loading">
+        No events found in your area.
+        <button class = "btn btn-success" v-on:click="userLocation = ''"> Show all events? </button>
+      </i>
+
       <i v-if="userLocation === '' && !loading">
           Seeing events that aren't in your area? Click the "compass" icon far right
           in your browser URL box to allow us to see your location so we can tailor
@@ -123,6 +128,15 @@ var $$eventLister = Vue.extend({
   ready: function(){
     this.getEvents();
     this.getUserLocation();
+  },
+
+  computed: {
+
+    // determine if no Events were found with the given filters & the user's current location.
+    noEventsFound: function(){
+      return this.$eval("events | dontShowOldEvents | events_in_users_location | seatsAvailable | latest | first_five").length === 0;
+    }
+
   },
 
   methods: {
@@ -223,6 +237,12 @@ function testEventFiltering(){
 
     if(findEventById(sydneyEvents,1).length < 1){
       console.error("Should be showing event with ID 1 as the User location is set to Sydney");
+    }
+
+    vm.userLocation = "test wrong city";
+
+    if(!vm.noEventsFound){
+      console.error("No events should be listed as none of the events have a location of: 'test wrong city'");
     }
 
   });
