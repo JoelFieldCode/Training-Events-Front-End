@@ -1,26 +1,28 @@
 var $$event = Vue.extend({
   data: function(){
     return {
+      // holds our detail event
       event: {},
     }
   },
-
-  mixins: [relativeMixin],
 
   template: `
 
         <div class = "row" style = "margin-top: 50px; margin-bottom: 50px;">
           <div class="page-header">
             <h1>{{event.title}}
-              <small>{{event.location}} at {{event.datetime | timestamp}}</small>
+              <small>{{event.location}} on {{event.datetime | timestamp}}</small>
 
             </h1>
+            <!--
+              Seats available conditional styling component based on number of seats left
+            -->
             <seats :seats_available="event.seats_available"> </seats>
-            <template v-if="eventIsLessThanAMonthAway(event)">
-              <span class = "glyphicon glyphicon-exclamation-sign" style = "color: red;">
-                {{relativeDiff(event).toString().replace("-", "")}} days left!
-              </span>
-            </template>
+            <!--
+              Uses relative time component which displays a red warning message
+              if the event is less than a month away
+            -->
+            <relative-time :event_time="event.datetime"> </relative-time>
           </div>
         </div>
 
@@ -35,12 +37,14 @@ var $$event = Vue.extend({
 
   `,
 
+  //init, get event
   ready: function(){
     this.getEvent();
   },
 
   methods: {
 
+    // get event from json by filtering for the event ID from the route params
     getEvent: function(){
       this.$http.get("data.json").then(function(resp){
         this.event = resp.body.filter(function(event){
